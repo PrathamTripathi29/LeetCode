@@ -1,17 +1,16 @@
 class Solution {
 public:
     vector<vector<int>> generate(int numRows) {
-        vector<vector<int>> ans;
-        vector<int> prevrow;
-        for(int i=0; i < numRows; i++){
+        vector<vector<int>> pascal;
+        vector<int> dp;
+        for(int i=0; i<numRows; i++){
             vector<int> temp(i+1, 1);
-
             for(int j=1; j<i; j++){
-                temp[j] = prevrow[j-1] + prevrow[j];
+                temp[j] = dp[j-1] + dp[j];
             }
-            ans.push_back(temp);
-            prevrow = temp;
+            pascal.push_back(temp);
+            dp = temp;
         }
-        return ans;
+        return pascal;
     }
 };
