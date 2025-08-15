@@ -12,17 +12,13 @@
 class Solution {
 public:
     void helper(TreeNode* root, int &sum, string num){
-        if(!root){
-            return;
-        }
         num += root->val + '0';
         if(!root->left && !root->right){
             sum += stoi(num);
             return;
         }
-        helper(root->left, sum, num);
-        helper(root->right, sum, num);
-        return;
+        if(root->left) helper(root->left, sum, num);
+        if(root->right) helper(root->right, sum, num);
     }
     int sumNumbers(TreeNode* root) {
         int sum = 0;
