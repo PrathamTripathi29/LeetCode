@@ -1,23 +1,15 @@
 class Solution {
 public:
     bool isPalindrome(string s) {
-        string checkpalin = "";
+        string str = "";
         for(int i=0; i<s.length(); i++){
-            if(isalnum(s.at(i))){
-                if(isdigit(s.at(i))){
-                    checkpalin += s.at(i);
-                }
-                else{
-                    checkpalin += tolower(s.at(i));
-                }
+            if(isdigit(s[i]) || isalpha(s[i])){
+                str += s[i];
             }
         }
-        int len;
-        len = checkpalin.length();
-        for(int i=0; i<len/2; i++){
-            if(checkpalin.at(i) != checkpalin.at(len-1-i)){
-                return false;
-            }
+        int l = str.length();
+        for(int i=0; i<l/2; i++){
+            if(tolower(str[i]) != tolower(str[l-1-i])) return false;
         }
         return true;
     }
