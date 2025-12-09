@@ -1,26 +1,24 @@
 class Solution {
-    typedef long long ll;
 public:
     int specialTriplets(vector<int>& nums) {
-        int m = 1e9 + 7;
-        ll ans = 0;
-        unordered_map<int, int> mpl, mpr;
-        for(auto num : nums){
+        int n = nums.size();
+        int mod = 1e9 + 7;
+        unordered_map<int, int> mpr, mpl;
+        long long ans = 0;
+        for(int num : nums){
             mpr[num]++;
         }
-        for(int i=0; i<nums.size(); i++){
+        for(int i=0; i<n; i++){
             int num = nums[i];
             if(--mpr[num] == 0){
                 mpr.erase(num);
             }
-
             int t = num*2;
-            ll countl = (mpl.count(t) ? mpl[t] : 0);
-            ll countr = (mpr.count(t) ? mpr[t] : 0);
-
-            ans = (ans + countl*countr) % m;
+            long long countl = (mpl[t] ? mpl[t] : 0);
+            long long countr = (mpr[t] ? mpr[t] : 0);
             mpl[num]++;
+            ans = (ans + countl*countr)%mod;
         }
-        return int(ans);
+        return (int)ans;
     }
 };
