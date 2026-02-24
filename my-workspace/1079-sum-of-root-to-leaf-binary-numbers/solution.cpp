@@ -11,26 +11,20 @@
  */
 class Solution {
 public:
-    int bitodec(vector<int> num){
-        int dec = 0;
-        int n = num.size();
-        for(int i=0; i<num.size(); i++){
-            dec += num[i] * (1 << (n-1-i));
-        }
-        return dec;
-    }
-    int sum(TreeNode* root, vector<int> num){
+    int sumCalc(TreeNode* root, string curr){
         if(!root){
             return 0;
         }
-        num.push_back(root->val);
+        curr += root->val + '0';
         if(!root->left && !root->right){
-            return bitodec(num);
+            int num = stoi(curr, nullptr, 2);
+            return num;
         }
-        return sum(root->left, num) + sum(root->right, num);
+        
+        return sumCalc(root->left, curr) + sumCalc(root->right, curr);
     }
     int sumRootToLeaf(TreeNode* root) {
-        vector<int> num;
-        return sum(root, num);
+        string curr;
+        return sumCalc(root, curr);
     }
 };
