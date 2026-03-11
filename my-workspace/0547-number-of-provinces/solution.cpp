@@ -1,23 +1,23 @@
 class Solution {
 public:
-    void dfs(int i, vector<vector<int>> &isConnected, vector<bool> &v){
-        v[i] = true;
-        for(int j=0; j<isConnected[i].size(); j++){
-            if(isConnected[i][j] && v[j] == false){
-                dfs(j, isConnected, v);
+    void dfs(int city, vector<vector<int>>& isConnected, vector<int>& vis, int n){
+        vis[city] = 1;
+        for(int i=0; i<n; i++){
+            if(isConnected[city][i] && !vis[i]){
+                dfs(i, isConnected, vis, n);
             }
         }
     }
     int findCircleNum(vector<vector<int>>& isConnected) {
+        int provinces = 0;
         int n = isConnected.size();
-        vector<bool> v(n, false);
-        int count = 0;
+        vector<int> vis(n, 0);
         for(int i=0; i<n; i++){
-            if(v[i] == false){
-                count++;
-                dfs(i, isConnected, v);
+            if(!vis[i]){
+                provinces++;
+                dfs(i, isConnected, vis, n);
             }
         }
-        return count; 
+        return provinces;
     }
 };
