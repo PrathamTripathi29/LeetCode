@@ -1,34 +1,32 @@
 class Solution {
 public:
-    void dfs(int i, int j, int m, int n, vector<vector<char>> &grid, vector<vector<int>> &v){
-        v[i][j] = 1;
-        int dr[4] = {-1, 0, 1, 0};
-        int dc[4] = {0, 1, 0, -1};
-                for(int k = 0; k<4; k++){
-                    
-                        int currrow = i + dr[k];
-                        int currcol = j + dc[k];
-                        if(currrow >= 0 && currcol >= 0 && currrow < m && currcol < n && grid[currrow][currcol] == '1' && !v[currrow][currcol]){
-                            dfs(currrow, currcol, m, n, grid, v);
-                        }
-                    
-                }
-            
-        
-    }
-    int numIslands(vector<vector<char>>& grid) {
-        int count = 0;
-        int m = grid.size();
-        int n = grid[0].size();
-        vector<vector<int>> v(m, vector<int>(n, 0));
-        for(int i=0; i<m; i++){
-            for(int j=0; j<n; j++){
-                if(grid[i][j] == '1' && v[i][j] == 0){
-                    count++;
-                    dfs(i, j, m, n, grid, v);
+    void dfs(int r, int c, vector<vector<char>>& grid, vector<vector<int>>& vis, int m, int n){
+        vis[r][c] = 1;
+        int dr[4] = {1, -1, 0, 0};
+        int dc[4] = {0, 0, 1, -1};
+        for(int i=0; i<4; i++){
+            int nr = r + dr[i];
+            int nc = c + dc[i];
+            if(nr >= 0 && nc >= 0 && nr < m && nc < n){
+                if(!vis[nr][nc] && grid[nr][nc] == '1'){
+                    dfs(nr, nc, grid, vis, m, n);
                 }
             }
         }
-        return count;
+    }
+    int numIslands(vector<vector<char>>& grid) {
+        int islands = 0;
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<vector<int>> vis(m, vector<int>(n, 0));
+        for(int i=0; i<m; i++){
+            for(int j=0; j<n; j++){
+                if(!vis[i][j] && grid[i][j] == '1'){
+                    islands++;
+                    dfs(i, j, grid, vis, m, n);
+                }
+            }
+        }
+        return islands;
     }
 };
