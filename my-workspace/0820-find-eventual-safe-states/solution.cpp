@@ -5,8 +5,10 @@ public:
         pathVis[node] = 1;
         for(int nbr : graph[node]){
             if(!vis[nbr]){
-                if(dfs(nbr, graph, vis, pathVis, isSafeNode)) return true;
-            } else if(pathVis[nbr]){
+                if(dfs(nbr, graph, vis, pathVis, isSafeNode)){
+                    return true;
+                };
+            } else if(pathVis[nbr]) {
                 return true;
             }
         }
@@ -19,17 +21,17 @@ public:
         vector<int> vis(n, 0);
         vector<int> pathVis(n, 0);
         vector<int> isSafeNode(n, 0);
-        vector<int> safeNodes;
         for(int i=0; i<n; i++){
             if(!vis[i]){
                 dfs(i, graph, vis, pathVis, isSafeNode);
             }
         }
+        vector<int> ans;
         for(int i=0; i<n; i++){
             if(isSafeNode[i]){
-                safeNodes.push_back(i);
+                ans.push_back(i);
             }
         }
-        return safeNodes;
+        return ans;
     }
 };
