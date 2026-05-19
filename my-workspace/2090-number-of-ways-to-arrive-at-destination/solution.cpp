@@ -2,35 +2,31 @@ class Solution {
 public:
     int mod = 1e9 + 7;
     int countPaths(int n, vector<vector<int>>& roads) {
-        vector<vector<vector<int>>> adj(n);
-        for(int i=0; i<roads.size(); i++){
-            int u = roads[i][0];
-            int v = roads[i][1];
-            int t = roads[i][2];
+        vector<vector<pair<int, long long>>> adj(n);
+        for(auto road : roads){
+            int u = road[0];
+            int v = road[1];
+            int t = road[2];
             adj[u].push_back({v, t});
             adj[v].push_back({u, t});
         }
-        priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
-        vector<long long> time(n, LLONG_MAX);
-        time[0] = 0;
-        vector<int> ways(n, 0);
+        vector<long long> dist(n, LLONG_MAX);
+        vector<long long> ways(n, 0);
+        dist[0] = 0;
         ways[0] = 1;
+        // dist, node
+        priority_queue<pair<long long, int>, vector<pair<long long, int>>, greater<pair<long long, int>>> pq;
         pq.push({0, 0});
         while(!pq.empty()){
-            int node = pq.top().second;
-            long long t = pq.top().first;
+            auto [d, node] = pq.top();
             pq.pop();
-            if(t > time[node]) continue;
-            for(auto& nbr : adj[node]){
-                int nbrnode = nbr[0];
-                long long nbrt = nbr[1];
-                if(nbrt + t == time[nbrnode]){
-                    ways[nbrnode] = (ways[nbrnode] + ways[node]) % mod;
-                }
-                if(nbrt + t < time[nbrnode]){
-                    pq.push({nbrt + t, nbrnode});
-                    ways[nbrnode] = ways[node];
-                    time[nbrnode] = nbrt + t;
+            for(auto nbr : adj[node]){
+                if(d + nbr.second < dist[nbr.first]){
+                    dist[nbr.first] = d + nbr.second;
+                    pq.push({dist[nbr.first], nbr.first});
+                    ways[nbr.first] = ways[node];
+                } else if(d + nbr.second == dist[nbr.first]){
+                    ways[nbr.first] = (ways[nbr.first] + ways[node])%mod;
                 }
             }
         }
