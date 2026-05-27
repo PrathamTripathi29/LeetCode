@@ -5,39 +5,35 @@ public:
         for(int i=0; i<n; i++){
             dist[i][i] = 0;
         }
-        for(int i=0; i<edges.size(); i++){
-            int u = edges[i][0];
-            int v = edges[i][1];
-            int w = edges[i][2];
-            dist[u][v] = w;
-            dist[v][u] = w;
+        for(auto edge : edges){
+            int u = edge[0];
+            int v = edge[1];
+            int d = edge[2];
+            dist[u][v] = d;
+            dist[v][u] = d;
         }
-        for(int via = 0; via < n; via++){
-            for(int src = 0; src < n; src++){
-                for(int dest = 0; dest < n; dest++){
-                    if(dist[src][via] == INT_MAX || dist[via][dest] == INT_MAX) continue;
-                    dist[src][dest] = min(dist[src][dest], dist[src][via] + dist[via][dest]);
+        for(int k=0; k<n; k++){
+            for(int i=0; i<n; i++){
+                for(int j=0; j<n; j++){
+                    if(dist[i][k] == INT_MAX || dist[k][j] == INT_MAX) continue;
+                    dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
                 }
             }
         }
-        vector<int> numberOfCities(n, 0);
+        int city = -1;
+        int minCount = n;
         for(int i=0; i<n; i++){
+            int count = 0;
             for(int j=0; j<n; j++){
-                if(i == j) continue;
                 if(dist[i][j] <= distanceThreshold){
-                    numberOfCities[i]++;
+                    count++;
                 }
             }
-        }
-        int minCities = INT_MAX;
-        for(int i=0; i<n; i++){
-            minCities = min(minCities, numberOfCities[i]);
-        }
-        for(int i=n-1; i>=0; i--){
-            if(numberOfCities[i] == minCities){
-                return i;
+            if(count <= minCount){
+                minCount = count;
+                city = i;
             }
         }
-        return 0;
+        return city;
     }
 };
