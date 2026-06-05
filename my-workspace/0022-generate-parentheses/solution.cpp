@@ -1,20 +1,20 @@
 class Solution {
 public:
-    void dfs(int openpara, int closepara, string s, int n, vector<string> &ans){
-        if(openpara == closepara && openpara + closepara == 2*n){
+    void f(int opp, int clp, string s, int n, vector<string>& ans){
+        if(opp == n && clp == n){
             ans.push_back(s);
             return;
         }
-        if(openpara < n){
-            dfs(openpara+1, closepara, s + "(", n, ans);
+        if(opp < n){
+            f(opp+1, clp, s+'(', n, ans);
         }
-        if(closepara < openpara){
-            dfs(openpara, closepara+1, s + ")", n, ans);
+        if(clp < opp){
+            f(opp, clp+1, s+')', n, ans);
         }
     }
     vector<string> generateParenthesis(int n) {
         vector<string> ans;
-        dfs(0, 0, "", n, ans);
+        f(0, 0, "", n, ans);
         return ans;
     }
 };
