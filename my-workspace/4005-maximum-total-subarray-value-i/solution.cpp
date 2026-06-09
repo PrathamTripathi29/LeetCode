@@ -1,13 +1,8 @@
 class Solution {
 public:
     long long maxTotalValue(vector<int>& nums, int k) {
-        int minval = INT_MAX;
-        int maxval = INT_MIN;
-        for(int num : nums){
-            maxval = max(maxval, num);
-            minval = min(minval, num);
-        }
-        long long ans = ((long long)maxval - minval) * k;
-        return ans;
+        int mx = *max_element(nums.begin(), nums.end());
+        int mn = *min_element(nums.begin(), nums.end());
+        return (long long)(mx-mn)*k;
     }
 };
