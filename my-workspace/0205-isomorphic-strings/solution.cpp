@@ -1,32 +1,18 @@
 class Solution {
 public:
     bool isIsomorphic(string s, string t) {
-        int ssize = s.length();
-        int tsize = t.length();
-        unordered_map<char, char> stot;
-        unordered_map<char, char> ttos;
-        for(int i=0; i<ssize; i++){
-            char S = s[i];
-            char T = t[i];
-            if(stot.find(S) == stot.end()){
-                stot[S] = T;
+        unordered_map<char, char> mp1;
+        unordered_map<char, char> mp2;
+        for(int i=0; i<s.length(); i++){
+            if(mp1.find(s[i]) != mp1.end()){
+                if(t[i] != mp1[s[i]]) return false;
+            } else {
+                mp1[s[i]] = t[i];
             }
-            else{
-                if(stot[S] != T){
-                    return false;
-                }
-            }
-        }
-        for(int i=0; i<tsize; i++){
-            char S = s[i];
-            char T = t[i];
-            if(ttos.find(T) == ttos.end()){
-                ttos[T] = S;
-            }
-            else{
-                if(ttos[T] != S){
-                    return false;
-                }
+            if(mp2.find(t[i]) != mp2.end()){
+                if(s[i] != mp2[t[i]]) return false;
+            } else {
+                mp2[t[i]] = s[i];
             }
         }
         return true;
