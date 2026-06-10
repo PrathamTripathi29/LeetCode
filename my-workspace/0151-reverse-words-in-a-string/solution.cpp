@@ -1,13 +1,27 @@
 class Solution {
 public:
     string reverseWords(string s) {
-        string ans = "";
+        int n = s.length();
+        string ans;
         string word;
-        istringstream stream(s);
-        while(stream >> word){
-            ans = word + " " + ans;
+        for(int i=n-1; i>=0; i--){
+            char ch = s[i];
+            if(ch == ' '){
+                if(word.length() > 0){
+                    reverse(word.begin(), word.end());
+                    ans += word;
+                    ans += ' ';
+                }
+                word = "";
+            } else {
+                word += ch;
+            }
         }
-        ans.pop_back();
+        reverse(word.begin(), word.end());
+        ans += word;
+        if(ans.back() == ' '){
+            ans.pop_back();
+        }
         return ans;
     }
 };
