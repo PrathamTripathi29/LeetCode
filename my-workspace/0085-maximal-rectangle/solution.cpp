@@ -1,20 +1,32 @@
 class Solution {
 public:
-    int calcarea(vector<int>& heights){
+    int largestRectangleArea(vector<int>& heights) {
         int n = heights.size();
+        vector<int> nextSmaller(n);
+        vector<int> prevSmaller(n);
         stack<int> s;
-        int area = 0;
-        for(int i=0; i<=n; i++){
-            int h = (i==n) ? 0 : heights[i];
-            while(!s.empty() && h < heights[s.top()]){
-                int height = heights[s.top()];
+        for(int i=0; i<n; i++){
+            while(!s.empty() && heights[s.top()] >= heights[i]){
                 s.pop();
-                int width = s.empty() ? i : i - s.top() - 1;
-                area = max(area, height*width);
             }
+            prevSmaller[i] = s.empty() ? -1 : s.top();
             s.push(i);
         }
-        return area;
+        while(s.size()) s.pop();
+        for(int i=n-1; i>=0; i--){
+            while(!s.empty() && heights[s.top()] >= heights[i]){
+                s.pop();
+            }
+            nextSmaller[i] = s.empty() ? n : s.top();
+            s.push(i);
+        }
+        int ans = 0;
+        for(int i=0; i<n; i++){
+            int l = prevSmaller[i];
+            int r = nextSmaller[i];
+            ans = max(ans, (r-l-1)*heights[i]);
+        }
+        return ans;
     }
     int maximalRectangle(vector<vector<char>>& matrix) {
         int m = matrix.size();
@@ -23,13 +35,10 @@ public:
         int ans = 0;
         for(int i=0; i<m; i++){
             for(int j=0; j<n; j++){
-                if(matrix[i][j] == '1'){
-                    heights[j]++;
-                } else {
-                    heights[j] = 0;
-                }
+                if(matrix[i][j] == '1') heights[j]++;
+                else heights[j] = 0;
             }
-            ans = max(ans, calcarea(heights));
+            ans = max(ans, largestRectangleArea(heights));
         }
         return ans;
     }
