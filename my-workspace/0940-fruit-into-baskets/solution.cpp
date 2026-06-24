@@ -1,22 +1,19 @@
 class Solution {
 public:
     int totalFruit(vector<int>& fruits) {
-        int prev = -1, prevtoprev = -1, left = 0, right = 0, maxfruit = 0;
-        for(int i=0; i<fruits.size(); i++){
-            if(fruits[i] == prev || fruits[i] == prevtoprev){
-                right++;
-            } else{
-                right = left + 1;
+        int n = fruits.size();
+        unordered_map<int, int> mp;
+        int l = 0;
+        int ans = 0;
+        for(int i=0; i<n; i++){
+            mp[fruits[i]]++;
+            while(mp.size() > 2 && l <= i){
+                mp[fruits[l]]--;
+                if(mp[fruits[l]] == 0) mp.erase(fruits[l]);
+                l++;
             }
-            if(fruits[i] == prev){
-                left++;
-            } else{
-                left = 1;
-                prevtoprev = prev;
-                prev = fruits[i];
-            }
-            maxfruit = max(maxfruit, right);
+            ans = max(ans, i-l+1);
         }
-        return maxfruit;
+        return ans;
     }
 };
