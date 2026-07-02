@@ -11,15 +11,22 @@
  */
 class Solution {
 public:
-    void f(TreeNode* root, int lvl, vector<int>& ans){
-        if(!root) return;
-        if(ans.size() == lvl) ans.push_back(root->val);
-        if(root->right) f(root->right, lvl+1, ans);
-        if(root->left) f(root->left, lvl+1, ans);
-    }
     vector<int> rightSideView(TreeNode* root) {
+        if(!root) return {};
+        map<int, int> mp;
+        queue<pair<TreeNode*, int>> q;
+        q.push({root, 0});
         vector<int> ans;
-        f(root, 0, ans);
+        while(!q.empty()){
+            auto [node, l] = q.front();
+            q.pop();
+            if(mp.find(l) == mp.end()) mp[l] = node->val;
+            if(node->right) q.push({node->right, l+1});
+            if(node->left) q.push({node->left, l+1});
+        }
+        for(auto it : mp){
+            ans.push_back(it.second);
+        }
         return ans;
     }
 };
