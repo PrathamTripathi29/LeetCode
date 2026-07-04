@@ -13,19 +13,19 @@ class Solution {
 public:
     int widthOfBinaryTree(TreeNode* root) {
         queue<pair<TreeNode*, long long>> q;
-        q.push({root, 0});
         long long width = 0;
+        q.push({root, 0});
         while(!q.empty()){
             int size = q.size();
             long long st = q.front().second;
             long long ed = q.back().second;
-            width = max(width, ed - st + 1);
+            width = max(width, ed-st+1);
             while(size--){
                 auto [node, idx] = q.front();
-                idx = idx - st;
                 q.pop();
-                if(node->left) q.push({node->left, (long long)2*idx+1});
-                if(node->right) q.push({node->right, (long long)2*idx+2});
+                idx = idx-st;
+                if(node->left) q.push({node->left, 2*idx+1});
+                if(node->right) q.push({node->right, 2*idx+2});
             }
         }
         return width;
