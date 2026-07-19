@@ -11,12 +11,14 @@
  */
 class Solution {
 public:
-    bool f(TreeNode* root, long long low, long long high){
+    bool check(TreeNode* root, long long l, long long h){
         if(!root) return true;
-        if(root->val <= low || root->val >= high) return false;
-        return f(root->left, low, root->val) && f(root->right, root->val, high);
+        if(root->val >= h || root->val <= l) return false;
+        return check(root->left, l, root->val) && check(root->right, root->val, h);
     }
     bool isValidBST(TreeNode* root) {
-        return f(root, LLONG_MIN, LLONG_MAX);
+        long long h = LLONG_MAX;
+        long long l = LLONG_MIN;
+        return check(root, l, h);
     }
 };
